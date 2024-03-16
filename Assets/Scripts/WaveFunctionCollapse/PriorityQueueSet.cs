@@ -1,27 +1,36 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
-public class PriorityQueue<T>
+public class PriorityQueueSet<T>
 {
+    HashSet<T> set;
     List<Tuple<T, int>> elements;
 
     public int Count => elements.Count;
 
-    public PriorityQueue()
+    public PriorityQueueSet()
     {
+        set = new HashSet<T>();
         elements = new List<Tuple<T, int>>();
     }
 
     public void Add(T item, int key)
     {
         Tuple<T, int> element = new Tuple<T, int>(item, key);
-        int sameItemIndex = elements.FindIndex( e => ReferenceEquals(e.Item1, item));
-        if(sameItemIndex != -1)
+        if(set.Add(item))
         {
-            if(key != elements[sameItemIndex].Item2) elements.RemoveAt(sameItemIndex);
-            else return;
+            elements.Add(element);
         }
-        elements.Add(element);
+        else
+        {
+            int sameItemIndex = elements.FindIndex( e => ReferenceEquals(e.Item1, item));
+            if(key != elements[sameItemIndex].Item2) 
+            {
+                elements.RemoveAt(sameItemIndex);
+                elements.Add(element);
+            }
+        }
     }
 
     public T ExtractMin()
@@ -40,6 +49,7 @@ public class PriorityQueue<T>
         }
         T minElement = elements[lowestValueIndex].Item1;
         elements.RemoveAt(lowestValueIndex);
+        set.Remove(minElement);
 
         return minElement;
     }

@@ -9,13 +9,13 @@ public class WFCMapGenerator : MonoBehaviour
 	Module[] modules;
 
 	GameObject mapRoot, moduleTemplate;
-	PriorityQueue<Slot> collapseOrder;
+	PriorityQueueSet<Slot> collapseOrder;
 	Map map;
 
 	void Awake()
 	{
 		map = new Map(mapSize, modules);
-		collapseOrder = new PriorityQueue<Slot>();
+		collapseOrder = new PriorityQueueSet<Slot>();
 		mapRoot = new GameObject("Map Root");
 		moduleTemplate = new GameObject("Module Template");
 		moduleTemplate.AddComponent<SpriteRenderer>();
