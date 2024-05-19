@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 
 public class Slot
@@ -11,6 +12,8 @@ public class Slot
 	public Module Module => module;
 	public bool IsCollapsed => isCollapsed;
 	public int PossibilitiesCount => possibilities.Count;
+	public HashSet<Module> Possibilities => possibilities;
+
 
 	public Slot(Module[] posibilites)
 	{
@@ -26,10 +29,10 @@ public class Slot
 		}
 	}
 
-	public void Spread(Module[] limitingModules)
+	public void Spread(IEnumerable<Module> limitingModules)
 	{
 		possibilities.IntersectWith(limitingModules);
-		if (possibilities.Count == 1) this.Collapse();
+		if (possibilities.Count == 1) Collapse();
 		else if (possibilities.Count == 0) isCollapsed = true;
 	}
 
@@ -56,10 +59,13 @@ public class Slot
 				if (i == randomModuleIndex)
 				{
 					module = possibility;
-					return;
+					goto CleanPossibilities;
 				}
 				i++;
 			}
 		}
+	CleanPossibilities:
+		possibilities.Clear();
+		possibilities.Add(module);
 	}
 }

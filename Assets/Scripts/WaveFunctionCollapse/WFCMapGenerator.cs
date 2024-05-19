@@ -1,5 +1,5 @@
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Analytics;
 
 public class WFCMapGenerator : MonoBehaviour
 {
@@ -40,8 +40,6 @@ public class WFCMapGenerator : MonoBehaviour
 			if(minSlot == null) Debug.LogError("Min slot null");
 			currentPosition = map.GetPosition(minSlot);
 
-			Debug.Log(currentPosition);
-
 			minSlot.Collapse();
 			if(minSlot.Module == null) continue;
 
@@ -51,33 +49,91 @@ public class WFCMapGenerator : MonoBehaviour
 			goModule.transform.position = new Vector3(currentPosition.x, currentPosition.y, 0);
 			// GameObject goModule = new GameObject("Map Module (x:"+currentPosition)
 
-			Slot yPositive = map.GetSlot(new Vector2Int(currentPosition.x, currentPosition.y + 1));
-			Slot xPositive = map.GetSlot(new Vector2Int(currentPosition.x + 1, currentPosition.y));
-			Slot yNegative = map.GetSlot(new Vector2Int(currentPosition.x, currentPosition.y - 1));
-			Slot xNegative = map.GetSlot(new Vector2Int(currentPosition.x - 1, currentPosition.y));
-
-			if(yPositive != null && !yPositive.IsCollapsed)
-			{
-				yPositive.Spread(minSlot.Module.yPositive);
-				collapseOrder.Add(yPositive, yPositive.PossibilitiesCount);
-			}
-			if(xPositive != null && !xPositive.IsCollapsed)
-			{
-				xPositive.Spread(minSlot.Module.xPositive);
-				collapseOrder.Add(xPositive, xPositive.PossibilitiesCount);
-			}
-			if(yNegative != null && !yNegative.IsCollapsed)
-			{
-				yNegative.Spread(minSlot.Module.yNegative);
-				collapseOrder.Add(yNegative, yNegative.PossibilitiesCount);
-			}
-			if(xNegative != null && !xNegative.IsCollapsed)
-			{
-				xNegative.Spread(minSlot.Module.xNegative);
-				collapseOrder.Add(xNegative, xNegative.PossibilitiesCount);
-			}
+			Spread(currentPosition, minSlot);
 		}
 		Debug.Log("Generation Finished");
 	}
 
+	void Spread(Vector2Int spreadingSlotPos, Slot spreadingSlot)
+	{
+		Slot yPositive = map.GetSlot(new Vector2Int(spreadingSlotPos.x, spreadingSlotPos.y + 1));
+		Slot xPositive = map.GetSlot(new Vector2Int(spreadingSlotPos.x + 1, spreadingSlotPos.y));
+		Slot yNegative = map.GetSlot(new Vector2Int(spreadingSlotPos.x, spreadingSlotPos.y - 1));
+		Slot xNegative = map.GetSlot(new Vector2Int(spreadingSlotPos.x - 1, spreadingSlotPos.y));
+
+		if(yPositive != null && !yPositive.IsCollapsed)
+		{
+			int lastPossibilitiesCount = yPositive.PossibilitiesCount;
+			HashSet<Module> sum = new HashSet<Module>();
+			foreach(Module m in spreadingSlot.Possibilities)
+			{
+				foreach(Module possibility in m.yPositive)
+				{
+					sum.Add(possibility);
+				}
+			}
+			yPositive.Spread(sum);
+			if(yPositive.PossibilitiesCount < lastPossibilitiesCount) 
+			{
+				collapseOrder.Add(yPositive, yPositive.PossibilitiesCount);
+				Spread(new Vector2Int(spreadingSlotPos.x, spreadingSlotPos.y + 1), yPositive); 
+			}
+		}
+		if(xPositive != null && !xPositive.IsCollapsed)
+		{
+			int lastPossibilitiesCount = xPositive.PossibilitiesCount;
+			HashSet<Module> sum = new HashSet<Module>();
+			foreach(Module m in spreadingSlot.Possibilities)
+			{
+				foreach(Module possibility in m.xPositive)
+				{
+					sum.Add(possibility);
+				}
+			}
+			xPositive.Spread(sum);
+			if(xPositive.PossibilitiesCount < lastPossibilitiesCount) 
+			{
+				collapseOrder.Add(xPositive, xPositive.PossibilitiesCount);
+				Spread(new Vector2Int(spreadingSlotPos.x + 1, spreadingSlotPos.y), xPositive); 
+			}
+		}
+		if(yNegative != null && !yNegative.IsCollapsed)
+		{
+			int lastPossibilitiesCount = yNegative.PossibilitiesCount;
+			HashSet<Module> sum = new HashSet<Module>();
+			foreach(Module m in spreadingSlot.Possibilities)
+			{
+				foreach(Module possibility in m.yNegative)
+				{
+					sum.Add(possibility);
+				}
+			}
+			yNegative.Spread(sum);
+			if(yNegative.PossibilitiesCount < lastPossibilitiesCount) 
+			{
+				collapseOrder.Add(yNegative, yNegative.PossibilitiesCount);
+				Spread(new Vector2Int(spreadingSlotPos.x, spreadingSlotPos.y - 1), yNegative); 
+			}
+		}
+		if(xNegative != null && !xNegative.IsCollapsed)
+		{
+			int lastPossibilitiesCount = xNegative.PossibilitiesCount;
+			HashSet<Module> sum = new HashSet<Module>();
+			foreach(Module m in spreadingSlot.Possibilities)
+			{
+				foreach(Module possibility in m.xNegative)
+				{
+					sum.Add(possibility);
+				}
+			}
+			xNegative.Spread(sum);
+			if(xNegative.PossibilitiesCount < lastPossibilitiesCount) 
+			{
+				collapseOrder.Add(xNegative, xNegative.PossibilitiesCount);
+				Spread(new Vector2Int(spreadingSlotPos.x - 1, spreadingSlotPos.y), xNegative); 
+			}
+		}
+	}
+
 }
+
