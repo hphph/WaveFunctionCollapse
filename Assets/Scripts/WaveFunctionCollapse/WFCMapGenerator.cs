@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
 public class WFCMapGenerator : MonoBehaviour
@@ -20,10 +21,10 @@ public class WFCMapGenerator : MonoBehaviour
 		moduleTemplate = new GameObject("Module Template");
 		moduleTemplate.AddComponent<SpriteRenderer>();
 
-		WFCMapGenerate();
+		StartCoroutine(WFCMapGenerate());
 	}
 	
-	void WFCMapGenerate()
+	IEnumerator WFCMapGenerate()
 	{
 		// Add midPoint to collapseOrder
 		// Loop until collapseOrder is empty
@@ -50,6 +51,7 @@ public class WFCMapGenerator : MonoBehaviour
 			// GameObject goModule = new GameObject("Map Module (x:"+currentPosition)
 
 			Spread(currentPosition, minSlot);
+			yield return null;
 		}
 		Debug.Log("Generation Finished");
 	}
