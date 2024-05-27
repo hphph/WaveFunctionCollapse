@@ -13,11 +13,16 @@ MonoBehaviour:
   m_Name: Bush
   m_EditorClassIdentifier: 
   Sprite: {fileID: 1004082695, guid: 3ecd1dafbc2581748ba7ff0310492e8d, type: 3}
+  Weight: 3
   yPositive:
   - {fileID: 11400000, guid: 1ad5701bbffe83d4a9aba8a9e0c08ae1, type: 2}
+  - {fileID: 11400000}
   xPositive:
   - {fileID: 11400000, guid: 1ad5701bbffe83d4a9aba8a9e0c08ae1, type: 2}
+  - {fileID: 11400000}
   yNegative:
   - {fileID: 11400000, guid: 1ad5701bbffe83d4a9aba8a9e0c08ae1, type: 2}
+  - {fileID: 11400000}
   xNegative:
   - {fileID: 11400000, guid: 1ad5701bbffe83d4a9aba8a9e0c08ae1, type: 2}
+  - {fileID: 11400000}

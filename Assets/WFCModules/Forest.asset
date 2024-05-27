@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Forest
   m_EditorClassIdentifier: 
   Sprite: {fileID: 1969715487, guid: 3ecd1dafbc2581748ba7ff0310492e8d, type: 3}
+  Weight: 1
   yPositive:
   - {fileID: 11400000}
   - {fileID: 11400000, guid: 9df83b685a1bffd4a89e14c84c734a00, type: 2}

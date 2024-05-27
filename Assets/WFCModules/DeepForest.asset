@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: DeepForest
   m_EditorClassIdentifier: 
   Sprite: {fileID: -1939380748, guid: 3ecd1dafbc2581748ba7ff0310492e8d, type: 3}
+  Weight: 15
   yPositive:
   - {fileID: 11400000}
   - {fileID: 11400000, guid: bbb480f9e48cc204eb7ef3ee362190f6, type: 2}
