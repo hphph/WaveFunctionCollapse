@@ -152,7 +152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: def521d9ea25f9747871017def3de622, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapSize: {x: 30, y: 30}
+  mapSize: {x: 50, y: 50}
   modules:
   - {fileID: 11400000, guid: 3d6329f6f3a5ade42b3984812bd0306b, type: 2}
   - {fileID: 11400000, guid: 7c103d68f9087384a836f2059450f4c1, type: 2}
